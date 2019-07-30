@@ -70,11 +70,12 @@ protocol_forms = []
 connection = cx_Oracle.connect('solution_med/elsoft@med')
 print(connection.version)
 create_form = connection.cursor()
-get_rootid_form = connection.cursor().execute("select id from SOLUTION_FORM.FORM where code ='{id_form}' and rownum = 1".format(id_form=id_form))
-get_rootid_form = int(get_rootid_form.fetchone()[0])
+get_id_parent = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
+                                                  "code ='{id_form}' and rownum = 1".format(id_form=id_form)).fetchone()[0])
 
 for protocol_name in sheets_names:
-    add_form = "DECLARE rc pkg_global.ref_cursor_type; BEGIN p_content.save_form(NULL, NULL, {rootid_form}, {id_form}, {id_form},  '{protocol_name}', '', 0.0, 1, 1, 0, '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name), id_form=str(id_form), rootid_form=get_rootid_form)
+    code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[0])
+    add_form = "DECLARE rc pkg_global.ref_cursor_type; BEGIN p_content.save_form(NULL, NULL, {rootid_form}, {id_form}, {id_form},  '{protocol_name}', '', 0.0, 1, 1, 0, '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name), id_form=code_form, rootid_form=get_id_parent)
     protocol_forms.append(add_form)
     create_form.execute(add_form)
 
