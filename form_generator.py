@@ -5,11 +5,16 @@ import os
 import re
 
 # primary data
-##table_path = input('Input table path:')
-table_path = "C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\функционалисты\Исследование функции внешнего дыхания.xlsx"
+table_path = input('Input table path:')
+#table_path = "C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\функционалисты\Исследование функции внешнего дыхания.xlsx"
 id_form = input('Input code parent form:')
 file_name = os.path.splitext(os.path.basename(table_path))[0]
+'''
+input example 
+C:\\Users\ARM2\Desktop\Исследование функции внешнего дыхания.xlsx
+11222242
 
+'''
 
 # get data from excel
 wb = load_workbook(table_path)
@@ -63,9 +68,10 @@ for ws in wb.worksheets:
 # operation with oracle database
 protocol_forms = []
 connection = cx_Oracle.connect('solution_med/elsoft@med')
-#create_form = connection.cursor()
-get_rootid_form = connection.cursor().execute("select root_id from SOLUTION_FORM.FORM where code =" \
-                  " '{id_form}' and rownum = 1".format(id_form=id_form))
+print(connection.version)
+create_form = connection.cursor()
+get_rootid_form = connection.cursor().execute("select id from SOLUTION_FORM.FORM where code ='{id_form}' and rownum = 1".format(id_form=id_form))
+get_rootid_form = get_rootid_form.fetchone()
 
 for protocol_name in sheets_names:
     add_form = "DECLARE "\
@@ -91,7 +97,7 @@ for protocol_name in sheets_names:
     "COMMIT;"\
     "END;".format(protocol_name=str(protocol_name), id_form=str(id_form), rootid_form=get_rootid_form)
     protocol_forms.append(add_form)
-    #create_form.execute(add_form, )
+    create_form.execute(add_form, (protocol_name, id_form, get_rootid_form))
 
     '''
     p_content.save_form ATTRIBUTES
