@@ -29,17 +29,31 @@ for ws in wb.worksheets:
             break
     for row in range(5, ws.max_row): # 5 row is begin protocol_row
         element = ws.cell(row, 1).value
+        # 0 - разделитель
+        # 1 - редактируемый
+        # 2 - невидимый
+        # 3 - только
+        # чтение
+        # 4 - неактивный;
         element_data = ws.cell(row, 2).value
+        # Исследование функции внешнего дыхания
         type_answer = ws.cell(row, 3).value
+        # 0 - Простой текст (строка) 1 - Описание (много строк) 2 - Значения из списка
+        # 3 - Значения из внешнего справочника 4 - Формула 5 - Таблица 6 - Значение из системного справочника
+        # 7 - Формула SQL 8 - Поле для ввода диагноза 9 - Поле для ввода услуг 10 - Значение из дерева
+        # 11 - Значение из списка отмеченное галочками 12 - Файл 13 - Схема (изображение);
         multi_choise = ws.cell(row, 4).value
+        # 0 or 1
         answers = ws.cell(row, 5).value
+        # Нарушений легочной вентиляции не зарегистрировано
+        # Проба с физической нагрузкой - положительная
         if element:
             if re.search(r'Заголовок', element): #sive gramma mistakes
                 element = 0
             elif re.search(r'Вопрос', element):
                 element = 1
-        elif element == None:
-            break
+        elif element == None: # configurate unpredictable row
+            element = 1
         #sive location mistakes
         else:
             element_data = element
@@ -47,19 +61,19 @@ for ws in wb.worksheets:
         if element_data == None:
             element_data = ''
         if type_answer:
-            if re.search(r'свободный ответ', type_answer):
+            if re.search(r'свободный ответ', type_answer) or re.search(r'простой текст', type_answer):
                 type_answer = 0
             elif re.search(r'значения из списка', type_answer):
                 type_answer = 2
-        elif type_answer == None and element == 0:
-            type_answer = 0
         else:
             type_answer = 0
         if multi_choise:
             if re.match(r'нет', multi_choise) or re.match(r'-', multi_choise):
                 multi_choise = 0
-            else:
+            elif re.match(r'да', multi_choise):
                 multi_choise = 1
+            else:
+                multi_choise = 0
         else:
             multi_choise = 0
         if ws.cell(row, 5).value:
@@ -93,7 +107,7 @@ for protocol_name in sheets_names:
                                          " and rownum = 1".format(code_form=code_form)).fetchone()[0])
 
     for item_name in protocol_rows:
-        insert_item_value = """
+        insert_form_item = """
         DECLARE rc pkg_global.ref_cursor_type;
         BEGIN
         p_content.save_form_item(
@@ -136,31 +150,45 @@ for protocol_name in sheets_names:
                        id=id, code=protocol_rows.index(item_name),
                        sortcode=protocol_rows.index(item_name),
                        type=item_name[0],
-                       type_value=item_name[2], #0 - Простой текст (строка) 1 - Описание (много строк) 2 - Значения из списка
-                       # 3 - Значения из внешнего справочника 4 - Формула 5 - Таблица 6 - Значение из системного справочника
-                       # 7 - Формула SQL 8 - Поле для ввода диагноза 9 - Поле для ввода услуг 10 - Значение из дерева
-                       # 11 - Значение из списка отмеченное галочками 12 - Файл 13 - Схема (изображение);
+                       type_value=item_name[2],
                        is_multi=item_name[3],
                        )
-        create_form.execute(insert_item_value)
-
-
-    '''
-    p_content.save_form ATTRIBUTES
-                      p_form_id              IN solution_form.form.id%TYPE
-                     ,p_form_connector_id    IN solution_form.form.form_connector_id%TYPE
-                     ,p_root_id              IN solution_form.form.root_id%TYPE
-                     ,p_code                 IN solution_form.form.code%TYPE
-                     ,p_sortcode             IN solution_form.form.sortcode%TYPE
-                     ,p_text                 IN solution_form.form.text%TYPE
-                     ,p_note                 IN solution_form.form.note%TYPE
-                     ,p_color                IN solution_form.form.color%TYPE
-                     ,p_status               IN solution_form.form.status%TYPE
-                     ,p_next_status          IN solution_form.form.next_status%TYPE
-                     ,p_print_status         IN solution_form.form.print_status%TYPE
-                     ,p_report_list_id       IN solution_form.form.report_list_id%TYPE
-                     ,p_hide_status          IN solution_form.form.hide_status%TYPE
-                     ,p_profile_typ_id       IN solution_form.form.profile_typ_id%TYPE
-                     ,p_fill_form_type       IN solution_form.form.fill_form_type%TYPE
-                     ,p_only_permitted_users IN solution_form.form.only_permitted_users%TYPE
-                     ,p_rc                   IN OUT pkg_global.ref_cursor_type) AS'''
+        create_form.execute(insert_form_item)
+        if item_name[2] == 2:
+            for answer in item_name[4]:
+                get_if_form_item = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                               " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
+                get_if_form_item_value = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                               " 'FORM_ITEM') FROM DUAL").fetchone()[0])
+                insert_form_item_value = """
+                INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
+                ID
+                ,FORM_ITEM_ID
+                ,CODE
+                ,SORTCODE
+                ,TEXT
+                ,NOTE
+                ,BALL
+                ,STATUS
+                ,IS_DEFAULT
+                ,NAME
+                ,ROOT_ID
+                ,IGNORE_TEXT
+                ) VALUES (
+                '{form_item_value}'
+                ,'{form_item}'
+                ,'1'
+                ,1
+                ,'{answer}'
+                ,''
+                ,NULL
+                ,1
+                ,0
+                ,'{name_answer}'
+                ,''
+                ,NULL
+                );
+                COMMIT;
+                """.format(form_item = get_if_form_item,form_item_value = get_if_form_item_value,
+                           answer=answer, name_answer = answer)
+                create_form.execute(insert_form_item_value)
