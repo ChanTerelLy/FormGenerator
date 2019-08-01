@@ -126,7 +126,7 @@ for protocol_name in sheets_names:
             , NULL
             , 1
             , ''
-            , 0
+            , {type_value}
             , 0
             , {is_multi}
             , NULL
@@ -154,12 +154,12 @@ for protocol_name in sheets_names:
                        is_multi=item_name[3],
                        )
         create_form.execute(insert_form_item)
+        get_if_form_item = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                           " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
         if item_name[2] == 2:
             for answer in item_name[4]:
-                get_if_form_item = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                               " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
                 get_if_form_item_value = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                               " 'FORM_ITEM') FROM DUAL").fetchone()[0])
+                                                               " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
                 insert_form_item_value = """
                 INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
                 ID
@@ -187,8 +187,8 @@ for protocol_name in sheets_names:
                 ,'{name_answer}'
                 ,''
                 ,NULL
-                );
-                COMMIT;
+                )
                 """.format(form_item = get_if_form_item,form_item_value = get_if_form_item_value,
                            answer=answer, name_answer = answer)
                 create_form.execute(insert_form_item_value)
+                create_form.execute('COMMIT')
