@@ -8,6 +8,8 @@ import re
 table_path = input('Input table path:')
 id_form = input('Input code parent form:')
 file_name = os.path.splitext(os.path.basename(table_path))[0]
+table_path = 'C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\УЗИ\УЗИ 1 МЕС.xlsx'
+id_form = '11222242'
 '''
 input example
 C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\УЗИ\УЗИ 1 МЕС.xlsx
@@ -47,19 +49,18 @@ for ws in wb.worksheets:
         answers = ws.cell(row, 5).value
         # Нарушений легочной вентиляции не зарегистрировано
         # Проба с физической нагрузкой - положительная
-        if element:
+        if element_data == None:
+            continue
+        elif element:
             if re.search(r'Заголовок', element): #sive gramma mistakes
                 element = 0
             elif re.search(r'Вопрос', element):
                 element = 1
+            else:
+                break
         elif element == None: # configurate unpredictable row
             element = 1
         #sive location mistakes
-        else:
-            element_data = element
-            element = 0
-        if element_data == None:
-            element_data = ''
         if type_answer:
             if re.search(r'свободный ответ', type_answer) or re.search(r'простой текст', type_answer):
                 type_answer = 0
