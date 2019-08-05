@@ -126,7 +126,7 @@ for protocol_name, protocol_value in protocols.items():
                                              "code = '{code_form}'"
                                              " and rownum = 1".format(code_form=code_form)).fetchone()[0])
     except Exception as e:
-        print(e)
+        print(str(protocol_name) + ' :\n' + str(e))
         input("Print enter to exist")
         continue
 
@@ -183,49 +183,51 @@ for protocol_name, protocol_value in protocols.items():
                 connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
                                             " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
         except Exception as e:
-            print(e)
-            input("Print enter to exist")
+            print(str(protocol_name) + ' :' + str(item_name) + ' : \n' + str(e))
+            input("Press enter to continue")
             continue
 
         if item_name[2] == 2:
-            try:
+
                 for index, answer in enumerate(item_name[4]):
-                    get_if_form_item_value = int(
-                        connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                    " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
-                    insert_form_item_value = """
-                    INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
-                    ID
-                    ,FORM_ITEM_ID
-                    ,CODE
-                    ,SORTCODE
-                    ,TEXT
-                    ,NOTE
-                    ,BALL
-                    ,STATUS
-                    ,IS_DEFAULT
-                    ,NAME
-                    ,ROOT_ID
-                    ,IGNORE_TEXT
-                    ) VALUES (
-                    '{form_item_value}'
-                    ,'{form_item}'
-                    ,'{code}'
-                    , {sort_code}
-                    ,'{answer}'
-                    ,''
-                    ,NULL
-                    ,1
-                    ,0
-                    ,'{name_answer}'
-                    ,''
-                    ,NULL
-                    )
-                    """.format(form_item=get_if_form_item, form_item_value=get_if_form_item_value,
-                               answer=answer, name_answer=answer, code=index, sort_code=index)
-                    create_form.execute(insert_form_item_value)
-                    create_form.execute('COMMIT')
-            except Exception as e:
-                print(e)
-                input("Print enter to exist")
-                continue
+                    try:
+                        get_if_form_item_value = int(
+                            connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                        " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
+                        insert_form_item_value = """
+                        INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
+                        ID
+                        ,FORM_ITEM_ID
+                        ,CODE
+                        ,SORTCODE
+                        ,TEXT
+                        ,NOTE
+                        ,BALL
+                        ,STATUS
+                        ,IS_DEFAULT
+                        ,NAME
+                        ,ROOT_ID
+                        ,IGNORE_TEXT
+                        ) VALUES (
+                        '{form_item_value}'
+                        ,'{form_item}'
+                        ,'{code}'
+                        , {sort_code}
+                        ,'{answer}'
+                        ,''
+                        ,NULL
+                        ,1
+                        ,0
+                        ,'{name_answer}'
+                        ,''
+                        ,NULL
+                        )
+                        """.format(form_item=get_if_form_item,
+                                   form_item_value=get_if_form_item_value,
+                                   answer=answer, name_answer=answer, code=index, sort_code=index)
+                        create_form.execute(insert_form_item_value)
+                        create_form.execute('COMMIT')
+                    except Exception as e:
+                        print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer) + ' : ' + str(e))
+                        input("Print enter to exist")
+                        continue
