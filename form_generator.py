@@ -66,11 +66,11 @@ def check_type_element_data(type_element_data):
     type_element_data = str(type_element_data)
     if re.search('дата', type_element_data.lower()):
         type_element_data = 1
-    if re.search('время', type_element_data.lower()):
+    elif re.search('время', type_element_data.lower()):
         type_element_data = 2
-    if re.search('дата и время', type_element_data.lower()):
+    elif re.search('дата и время', type_element_data.lower()):
         type_element_data = 3
-    if re.search('логический', type_element_data.lower()):
+    elif re.search('логический', type_element_data.lower()):
         type_element_data = 4
     else:
         type_element_data = 0
