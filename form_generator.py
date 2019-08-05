@@ -17,7 +17,7 @@ C:\\Users\ARM2\Desktop\Исследование функции внешнего 
 
 def check_element(element='0'):
     if element:
-        element.lower()
+        element = element.lower()
         if re.search(r'заг.ловок', element):  # sive gramma mistakes
             element = 0
         elif re.search(r'вопрос', element):
@@ -29,7 +29,7 @@ def check_element(element='0'):
 
 def check_type_answer(type_answer):
     if type_answer:
-        type_answer.lower()
+        type_answer = type_answer.lower()
         if re.search(r'свободный ответ', type_answer) or re.search(r'простой текст', type_answer):
             type_answer = 0
         elif re.search(r'значени[ея] из списка', type_answer):
