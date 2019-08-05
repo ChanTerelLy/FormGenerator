@@ -18,7 +18,7 @@ C:\\Users\ARM2\Desktop\Исследование функции внешнего 
 def check_element(element='0'):
     if element:
         element = element.lower()
-        if re.search(r'заг.ловок', element):  # sive gramma mistakes
+        if re.search(r'заг.ловок', element):
             element = 0
         elif re.search(r'вопрос', element):
             element = 1
@@ -62,7 +62,19 @@ def check_answers(answers):
         answers = ['']
     return answers
 
-
+def check_type_element_data(type_element_data):
+    type_element_data = str(type_element_data)
+    if re.search('дата', type_element_data.lower()):
+        type_element_data = 1
+    if re.search('время', type_element_data.lower()):
+        type_element_data = 2
+    if re.search('дата и время', type_element_data.lower()):
+        type_element_data = 3
+    if re.search('логический', type_element_data.lower()):
+        type_element_data = 4
+    else:
+        type_element_data = 0
+    return type_element_data
 # get data from excel
 wb = load_workbook(table_path)
 protocols = {}
@@ -76,6 +88,7 @@ for ws in wb.worksheets:
     protocol_rows = []
     for excel_row in range(5, ws.max_row):  # 5 excel_row is begin protocol_row
         element_data = ws.cell(excel_row, 2).value
+        type_element_data = check_type_element_data(element_data) if element_data else False
         if element_data == None:
             if ws.cell(excel_row, 5).value:
                 for i in check_answers(ws.cell(excel_row, 5).value):
@@ -83,6 +96,8 @@ for ws in wb.worksheets:
                 continue
             else:
                 continue
+
+
 
         element = check_element(ws.cell(excel_row, 1).value)
         # 0 - разделитель
@@ -101,7 +116,7 @@ for ws in wb.worksheets:
         answers = check_answers(ws.cell(excel_row, 5).value)
         # Нарушений легочной вентиляции не зарегистрировано
         # Проба с физической нагрузкой - положительная
-        excel_row = [element, element_data, type_answer, multi_choise, answers]
+        excel_row = [element, element_data, type_answer, multi_choise, answers, type_element_data]
         protocol_rows.append(excel_row)
     protocols[sheet_name] = protocol_rows
 
@@ -158,7 +173,7 @@ for protocol_name, protocol_value in protocols.items():
                 , 1
                 , ''
                 , {type_value}
-                , 0
+                , {type_element_data}
                 , {is_multi}
                 , NULL
                 , NULL
@@ -183,7 +198,7 @@ for protocol_name, protocol_value in protocols.items():
                            type=item_name[0],
                            type_value=item_name[2],
                            is_multi=item_name[3],
-                           )
+                           type_element_data=item_name[5])
             create_form.execute(insert_form_item)
             get_if_form_item = int(
                 connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
@@ -243,3 +258,4 @@ for protocol_name, protocol_value in protocols.items():
                         print('----------------------------------------------------------------------------------')
                         input("Print enter to exist")
                         continue
+
