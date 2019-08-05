@@ -22,8 +22,8 @@ def check_element(element='0'):
             element = 0
         elif re.search(r'вопрос', element):
             element = 1
-        else:
-            element = 1
+    else:
+        element = 1
     return element
 
 
@@ -32,7 +32,7 @@ def check_type_answer(type_answer):
         type_answer.lower()
         if re.search(r'свободный ответ', type_answer) or re.search(r'простой текст', type_answer):
             type_answer = 0
-        elif re.search(r'значения из списка', type_answer):
+        elif re.search(r'значени[ея] из списка', type_answer):
             type_answer = 2
     else:
         type_answer = 0
@@ -54,11 +54,11 @@ def check_multi_choise(multi_choise):
 
 
 def check_answers(answers):
-    if ws.cell(row, 5).value:
-        answers = ws.cell(row, 5).value.split('\n')
+    if ws.cell(excel_row, 5).value:
+        answers = ws.cell(excel_row, 5).value.split('\n')
         if isinstance(answers[0], str):
-            answers = re.split(r'\s{2,}', ws.cell(row, 5).value)
-    elif ws.cell(row, 5).value == None:
+            answers = re.split(r'\s{2,}', ws.cell(excel_row, 5).value)
+    elif ws.cell(excel_row, 5).value == None:
         answers = ['']
     return answers
 
@@ -69,37 +69,40 @@ protocols = {}
 
 for ws in wb.worksheets:
     sheet_name = ''
-    for i in range(1, 3):  # check name protocol in the first three row
+    for i in range(1, 3):  # check name protocol in the first three excel_row
         if ws.cell(i, 1).value:
             sheet_name = ws.cell(i, 1).value
             break
     protocol_rows = []
-    for row in range(5, ws.max_row):  # 5 row is begin protocol_row
-        if ws.cell(row, 2).value:
-            element_data = ws.cell(row, 2).value
-            # Исследование функции внешнего дыхания
-        else:
-            continue
+    for excel_row in range(5, ws.max_row):  # 5 excel_row is begin protocol_row
+        element_data = ws.cell(excel_row, 2).value
+        if element_data == None:
+            if ws.cell(excel_row, 5).value:
+                for i in check_answers(ws.cell(excel_row, 5).value):
+                    protocol_rows[len(protocol_rows) - 1][4].append(i)
+                continue
+            else:
+                continue
 
-        element = check_element(ws.cell(row, 1).value)
+        element = check_element(ws.cell(excel_row, 1).value)
         # 0 - разделитель
         # 1 - редактируемый
         # 2 - невидимый
         # 3 - только
         # чтение
         # 4 - неактивный;
-        type_answer = check_type_answer(ws.cell(row, 3).value)
+        type_answer = check_type_answer(ws.cell(excel_row, 3).value)
         # 0 - Простой текст (строка) 1 - Описание (много строк) 2 - Значения из списка
         # 3 - Значения из внешнего справочника 4 - Формула 5 - Таблица 6 - Значение из системного справочника
         # 7 - Формула SQL 8 - Поле для ввода диагноза 9 - Поле для ввода услуг 10 - Значение из дерева
         # 11 - Значение из списка отмеченное галочками 12 - Файл 13 - Схема (изображение);
-        multi_choise = check_multi_choise(ws.cell(row, 4).value)
+        multi_choise = check_multi_choise(ws.cell(excel_row, 4).value)
         # 0 or 1
-        answers = check_answers(ws.cell(row, 5).value)
+        answers = check_answers(ws.cell(excel_row, 5).value)
         # Нарушений легочной вентиляции не зарегистрировано
         # Проба с физической нагрузкой - положительная
-        row = [element, element_data, type_answer, multi_choise, answers]
-        protocol_rows.append(row)
+        excel_row = [element, element_data, type_answer, multi_choise, answers]
+        protocol_rows.append(excel_row)
     protocols[sheet_name] = protocol_rows
 
 # operation with oracle database
@@ -126,7 +129,10 @@ for protocol_name, protocol_value in protocols.items():
                                              "code = '{code_form}'"
                                              " and rownum = 1".format(code_form=code_form)).fetchone()[0])
     except Exception as e:
-        print(str(protocol_name) + ' :\n' + str(e))
+        print(str(protocol_name))
+        print('----------------------------------------------------------------------------------')
+        print(e)
+        print('----------------------------------------------------------------------------------')
         input("Print enter to exist")
         continue
 
@@ -183,7 +189,10 @@ for protocol_name, protocol_value in protocols.items():
                 connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
                                             " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
         except Exception as e:
-            print(str(protocol_name) + ' :' + str(item_name) + ' : \n' + str(e))
+            print(str(protocol_name) + ' :' + str(item_name))
+            print('----------------------------------------------------------------------------------')
+            print(e)
+            print('----------------------------------------------------------------------------------')
             input("Press enter to continue")
             continue
 
@@ -228,6 +237,9 @@ for protocol_name, protocol_value in protocols.items():
                         create_form.execute(insert_form_item_value)
                         create_form.execute('COMMIT')
                     except Exception as e:
-                        print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer) + ' : ' + str(e))
+                        print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer))
+                        print('----------------------------------------------------------------------------------')
+                        print(e)
+                        print('----------------------------------------------------------------------------------')
                         input("Print enter to exist")
                         continue
