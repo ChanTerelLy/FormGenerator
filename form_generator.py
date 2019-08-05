@@ -1,21 +1,17 @@
 import cx_Oracle
-from openpyxl import Workbook
 from openpyxl import load_workbook
 import os
 import re
 
 # primary data
-table_path = input('Input table path:')
+table_path = input('Input table path:')[1:-1]
 id_form = input('Input code parent form:')
 file_name = os.path.splitext(os.path.basename(table_path))[0]
-table_path = 'C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\УЗИ\УЗИ 1 МЕС.xlsx'
-id_form = '11222242'
+
 '''
 input example
-C:\\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\ДКМЦ\Протоколы\ДИАГНОСТИКА\УЗИ\УЗИ 1 МЕС.xlsx
 C:\\Users\ARM2\Desktop\Исследование функции внешнего дыхания.xlsx
 11222242
-
 '''
 
 # get data from excel
@@ -52,7 +48,7 @@ for ws in wb.worksheets:
         if element_data == None:
             continue
         elif element:
-            if re.search(r'Заголовок', element): #sive gramma mistakes
+            if re.search(r'Заг.ловок', element): #sive gramma mistakes
                 element = 0
             elif re.search(r'Вопрос', element):
                 element = 1
@@ -93,103 +89,119 @@ parent_id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM w
                                                   "code ='{id_form}' and rownum = 1".format(id_form=id_form)).fetchone()[0])
 
 for protocol_name in sheets_names:
-    code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where"
-                                                " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[0])
-    add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
-               " BEGIN p_content.save_form(" \
-               "NULL, NULL, {parent_id}, {id_form}," \
-               " {id_form},  '{protocol_name}', ''," \
-               " 0.0, 1, 1, 0," \
-               " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
-                                                               id_form=code_form, parent_id=parent_id)
-    create_form.execute(add_form)
-    id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
-                                         "code = '{code_form}'"
-                                         " and rownum = 1".format(code_form=code_form)).fetchone()[0])
+    try:
+        code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where"
+                                                    " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[0])
+        add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
+                   " BEGIN p_content.save_form(" \
+                   "NULL, NULL, {parent_id}, {id_form}," \
+                   " {id_form},  '{protocol_name}', ''," \
+                   " 0.0, 1, 1, 0," \
+                   " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
+                                                                   id_form=code_form, parent_id=parent_id)
+        create_form.execute(add_form)
+        id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
+                                             "code = '{code_form}'"
+                                             " and rownum = 1".format(code_form=code_form)).fetchone()[0])
+    except Exception as e:
+        print(e)
+        input("Print enter to exist")
+        continue
 
-    for item_name in protocol_rows:
-        insert_form_item = """
-        DECLARE rc pkg_global.ref_cursor_type;
-        BEGIN
-        p_content.save_form_item(
-            NULL
-            , NULL
-            , '{id}'
-            , NULL
-            , NULL
-            , '{code}'
-            , {sortcode}
-            , {type}
-            , {type_value}
-            , NULL
-            , 0.0
-            , '{item_name}'
-            , NULL
-            , 1
-            , ''
-            , {type_value}
-            , 0
-            , {is_multi}
-            , NULL
-            , NULL
-            , NULL
-            , ''
-            , ''
-            , 0
-            , 0
-            , 0
-            , ''
-            , 0
-            , NULL
-            , ''
-            , 0
-            , NULL
-            , rc);
-            COMMIT;
-            END;
-            """.format(item_name=item_name[1],
-                       id=id, code=protocol_rows.index(item_name),
-                       sortcode=protocol_rows.index(item_name),
-                       type=item_name[0],
-                       type_value=item_name[2],
-                       is_multi=item_name[3],
-                       )
-        create_form.execute(insert_form_item)
-        get_if_form_item = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                           " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
+    for index, item_name in enumerate(protocol_rows):
+        try:
+            insert_form_item = """
+            DECLARE rc pkg_global.ref_cursor_type;
+            BEGIN
+            p_content.save_form_item(
+                NULL
+                , NULL
+                , '{id}'
+                , NULL
+                , NULL
+                , '{code}'
+                , {sortcode}
+                , {type}
+                , {type_value}
+                , NULL
+                , 0.0
+                , '{item_name}'
+                , NULL
+                , 1
+                , ''
+                , {type_value}
+                , 0
+                , {is_multi}
+                , NULL
+                , NULL
+                , NULL
+                , ''
+                , ''
+                , 0
+                , 0
+                , 0
+                , ''
+                , 0
+                , NULL
+                , ''
+                , 0
+                , NULL
+                , rc);
+                COMMIT;
+                END;
+                """.format(item_name=item_name[1],
+                           id=id, code=index,
+                           sortcode=index,
+                           type=item_name[0],
+                           type_value=item_name[2],
+                           is_multi=item_name[3],
+                           )
+            create_form.execute(insert_form_item)
+            get_if_form_item = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                               " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
+        except Exception as e:
+            print(e)
+            input("Print enter to exist")
+            continue
+
         if item_name[2] == 2:
-            for answer in item_name[4]:
-                get_if_form_item_value = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                               " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
-                insert_form_item_value = """
-                INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
-                ID
-                ,FORM_ITEM_ID
-                ,CODE
-                ,SORTCODE
-                ,TEXT
-                ,NOTE
-                ,BALL
-                ,STATUS
-                ,IS_DEFAULT
-                ,NAME
-                ,ROOT_ID
-                ,IGNORE_TEXT
-                ) VALUES (
-                '{form_item_value}'
-                ,'{form_item}'
-                ,'1'
-                ,1
-                ,'{answer}'
-                ,''
-                ,NULL
-                ,1
-                ,0
-                ,'{name_answer}'
-                ,''
-                ,NULL
-                )
-                """.format(form_item = get_if_form_item,form_item_value = get_if_form_item_value,
-                           answer=answer, name_answer = answer)
-                create_form.execute(insert_form_item_value)
-                create_form.execute('COMMIT')
+            try:
+                for index, answer in enumerate(item_name[4]):
+                    get_if_form_item_value = int(connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                                   " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
+                    insert_form_item_value = """
+                    INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
+                    ID
+                    ,FORM_ITEM_ID
+                    ,CODE
+                    ,SORTCODE
+                    ,TEXT
+                    ,NOTE
+                    ,BALL
+                    ,STATUS
+                    ,IS_DEFAULT
+                    ,NAME
+                    ,ROOT_ID
+                    ,IGNORE_TEXT
+                    ) VALUES (
+                    '{form_item_value}'
+                    ,'{form_item}'
+                    ,'{code}'
+                    , {sort_code}
+                    ,'{answer}'
+                    ,''
+                    ,NULL
+                    ,1
+                    ,0
+                    ,'{name_answer}'
+                    ,''
+                    ,NULL
+                    )
+                    """.format(form_item = get_if_form_item,form_item_value = get_if_form_item_value,
+                               answer=answer, name_answer = answer, code=index, sort_code=index)
+                    create_form.execute(insert_form_item_value)
+                    create_form.execute('COMMIT')
+            except Exception as e:
+                print(e)
+                input("Print enter to exist")
+                continue
