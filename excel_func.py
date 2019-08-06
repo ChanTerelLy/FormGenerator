@@ -1,4 +1,4 @@
-from check_gramma_func import check_type_element_data, check_answers, check_element, check_type_answer, \
+from check_func import check_type_element_data, check_answers, check_element, check_type_answer, \
     check_multi_choise
 
 

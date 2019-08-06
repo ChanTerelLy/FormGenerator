@@ -4,7 +4,7 @@ import re
 def check_element(element, answers):
     if element:
         element = element.lower()
-        if re.search(r'заг.ловок', element) and answers != None:
+        if re.search(r'заг.ловок', element) and answers == None:
             element = 0
         elif re.search(r'вопрос', element):
             element = 1
@@ -18,9 +18,9 @@ def check_element(element, answers):
 def check_type_answer(type_answer):
     if type_answer:
         type_answer = type_answer.lower()
-        if re.search(r'свободный ответ', type_answer) or re.search(r'простой текст', type_answer):
+        if re.search(r'с.*й о.*т', type_answer) or re.search(r'простой текст', type_answer):
             type_answer = 0
-        elif re.search(r'значени[ея] из списка', type_answer):
+        elif re.search(r'з.*[ея] из с.*а', type_answer):
             type_answer = 2
     else:
         type_answer = 0

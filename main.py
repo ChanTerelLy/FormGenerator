@@ -3,13 +3,14 @@ import os
 from excel_func import *
 from sql_func import *
 
+
 def create_protocol(id_form):
     table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
     file_name = os.path.splitext(os.path.basename(table_path))[0]
     protocols = {}
     # operation with excel
     wb = load_workbook(table_path)
-    parse_excel_workbook(protocols, wb) # get data from excel
+    parse_excel_workbook(protocols, wb)  # get data from excel
     check_null_excel_sheet(protocols)
     # operation with database oracle
     connection = connect_MED()
@@ -19,8 +20,7 @@ def create_protocol(id_form):
         if len(protocols) == 1:
             protocol_name = file_name
         try:
-            add_form_string, code_form = sql_create_form(connection, parent_id, protocol_name)
-            sql_cursor.execute(add_form_string)
+            code_form = sql_create_children_form(connection, parent_id, protocol_name)
             id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
                                                  "code = '{code_form}'"
                                                  " and rownum = 1".format(code_form=code_form)).fetchone()[0])
@@ -47,20 +47,21 @@ def create_protocol(id_form):
                 continue
 
             if item_name[2] == 2:
-                    for index, answer in enumerate(item_name[4]):
-                        try:
-                            get_if_form_item_value = int(
-                                connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
-                                                            " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
-                            sql_insert_form_item_value(answer, sql_cursor, get_if_form_item, get_if_form_item_value,
-                                                       index)
-                        except Exception as e:
-                            print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer))
-                            print('----------------------------------------------------------------------------------')
-                            print(e)
-                            print('----------------------------------------------------------------------------------')
-                            input("Print enter to exist")
-                            continue
+                for index, answer in enumerate(item_name[4]):
+                    try:
+                        get_if_form_item_value = int(
+                            connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                                        " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
+                        sql_insert_form_item_value(answer, sql_cursor, get_if_form_item, get_if_form_item_value,
+                                                   index)
+                    except Exception as e:
+                        print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer))
+                        print('----------------------------------------------------------------------------------')
+                        print(e)
+                        print('----------------------------------------------------------------------------------')
+                        input("Print enter to exist")
+                        continue
+    print('Success')
 
 
 if __name__ == '__main__':
@@ -69,6 +70,13 @@ if __name__ == '__main__':
         11222242
         "C:\\Users\Roman\Desktop\Осмотр врача физиотерапевта первичный.xlsx"
     '''
+    connection = connect_MED()
+    print(sql_get_all_protocol_folders(connection))
+    choice_create_form = input('Create form: yes/no ')
+    if choice_create_form == 'yes':
+        form_name  = input('Input form name:')
+        sql_create_parent_form(connect_MED(), form_name)
+        print(sql_get_all_protocol_folders(connection))
     id_form = input('Input code parent form:')
     while True:
         create_protocol(id_form)

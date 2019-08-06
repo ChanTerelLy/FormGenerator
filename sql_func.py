@@ -87,10 +87,8 @@ def sql_insert_form_item(create_form, id, index, item_name):
     create_form.execute(insert_form_item)
 
 
-def sql_create_form(connection, parent_id, protocol_name):
-    code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where"
-                                                " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[
-                        0])
+def sql_create_children_form(connection, parent_id, protocol_name):
+    code_form = sql_next_code_form(connection)
     add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
                " BEGIN p_content.save_form(" \
                "NULL, NULL, {parent_id}, {id_form}," \
@@ -98,7 +96,27 @@ def sql_create_form(connection, parent_id, protocol_name):
                " 0.0, 1, 1, 0," \
                " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
                                                                id_form=code_form, parent_id=parent_id)
-    return add_form, code_form
+    connection.cursor().execute(add_form)
+    return  code_form
+
+def sql_create_parent_form(connection, protocol_name):
+    code_form = sql_next_code_form(connection)
+    add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
+               " BEGIN p_content.save_form(" \
+               "NULL, NULL, NULL, {id_form}," \
+               " {id_form},  '{protocol_name}', ''," \
+               " 0.0, 1, 1, 0," \
+               " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
+                                                               id_form=code_form)
+    connection.cursor().execute(add_form)
+    return code_form
+
+
+def sql_next_code_form(connection):
+    code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where"
+                                                " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[
+                        0])
+    return code_form
 
 
 def sql_get_id_form(connection, id_form):
@@ -107,6 +125,11 @@ def sql_get_id_form(connection, id_form):
                         0])
     return parent_id
 
+
+def sql_get_all_protocol_folders(connection):
+    list_folders = connection.cursor().execute("""select code, TEXT from solution_form.form where ROOT_ID is NULL""").fetchall()
+    for code, value in enumerate(list_folders):
+        print(str(code) + ':' + str(value))
 
 def connect_MED():
     connection = cx_Oracle.connect('solution_med/elsoft@med')
