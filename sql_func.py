@@ -134,4 +134,5 @@ def sql_get_all_protocol_folders(connection):
 def connect_MED():
     connection = cx_Oracle.connect('solution_med/elsoft@med')
     print(connection.version)
-    return connection
+    sql_cursor = connection.cursor()
+    return connection, sql_cursor
