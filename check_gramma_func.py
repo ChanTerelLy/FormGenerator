@@ -43,6 +43,7 @@ def check_multi_choise(multi_choise):
 
 def check_answers(answers):
     if answers:
+        answers = answers.replace('_x000D_', '')
         answers = answers.split('\n')
         if len(answers) > 1:
             return answers
