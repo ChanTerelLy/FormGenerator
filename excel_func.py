@@ -21,7 +21,7 @@ def parse_excel_workbook(protocols, wb):
                 else:
                     continue
 
-            element = check_element(ws.cell(excel_row, 1).value)
+            element = check_element(ws.cell(excel_row, 1).value, ws.cell(excel_row, 5).value)
             # 0 - разделитель
             # 1 - редактируемый
             # 2 - невидимый

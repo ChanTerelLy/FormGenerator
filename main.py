@@ -66,8 +66,8 @@ def create_protocol(id_form):
 if __name__ == '__main__':
     '''
         input example
-        C:\\Users\ARM2\Desktop\Исследование функции внешнего дыхания.xlsx
         11222242
+        "C:\\Users\Roman\Desktop\Осмотр врача физиотерапевта первичный.xlsx"
     '''
     id_form = input('Input code parent form:')
     while True:

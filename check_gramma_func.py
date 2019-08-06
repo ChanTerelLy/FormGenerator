@@ -1,12 +1,14 @@
 import re
 
 
-def check_element(element='0'):
+def check_element(element, answers):
     if element:
         element = element.lower()
-        if re.search(r'заг.ловок', element):
+        if re.search(r'заг.ловок', element) and answers != None:
             element = 0
         elif re.search(r'вопрос', element):
+            element = 1
+        else:
             element = 1
     else:
         element = 1
@@ -42,18 +44,17 @@ def check_multi_choise(multi_choise):
 def check_answers(answers):
     if answers:
         answers = answers.split('\n')
-        if isinstance(answers, list):
+        if len(answers) > 1:
             return answers
-        if isinstance(answers[0], str):
-            answers = re.split(r'\s{2,}', answers[0])
-        elif isinstance(answers[0], str):
-            answers = re.split(r'_x000D_', answers[0])
-            for phrases in answers:
-                answers.append(phrases.replace('_x000D_', ''))
-        elif isinstance(answers[0], str):
-            answers = re.split(r',', answers[0])
+        else:
+            if isinstance(answers[0], str):
+                answers = re.split(r'\s{2,}', answers[0])
+                if len(answers) > 1:
+                    return answers
+                else:
+                    answers = re.split(r',', answers[0])
     elif answers == None:
-        answers = ['']
+            answers = ['']
     return answers
 
 
