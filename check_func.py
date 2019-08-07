@@ -4,9 +4,9 @@ import re
 def check_element(element, answers):
     if element:
         element = element.lower()
-        if re.search(r'заг.ловок', element) and answers == None:
+        if re.search(r'з.*к', element) and answers == None:
             element = 0
-        elif re.search(r'вопрос', element):
+        elif re.search(r'в.*с', element):
             element = 1
         else:
             element = 1

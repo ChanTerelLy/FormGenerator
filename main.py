@@ -3,6 +3,15 @@ import os
 from excel_func import *
 from sql_func import *
 import argparse
+parser = argparse.ArgumentParser()
+parser.parse_args()
+
+def print_exception(exeption):
+    print('----------------------------------------------------------------------------------')
+    print(exeption)
+    print('----------------------------------------------------------------------------------')
+    input("Print enter to continue")
+
 
 def create_protocol(id_form):
     table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
@@ -61,11 +70,7 @@ def create_protocol(id_form):
     print('Success')
 
 
-def print_exception(exeption):
-    print('----------------------------------------------------------------------------------')
-    print(exeption)
-    print('----------------------------------------------------------------------------------')
-    input("Print enter to continue")
+
 
 
 if __name__ == '__main__':
