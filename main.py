@@ -74,7 +74,7 @@ def create_protocol(id_form):
 
 
 if __name__ == '__main__':
-    connection = connect_MED()
+    connection, sql_cursor = connect_MED()
     print(sql_get_all_protocol_folders(connection)) # get all folders forms
     choice_create_form = input('Create form: yes/no ')
     if choice_create_form == 'yes':

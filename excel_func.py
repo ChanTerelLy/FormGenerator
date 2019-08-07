@@ -2,10 +2,10 @@ from check_func import check_type_element_data, check_answers, check_element, ch
     check_multi_choise
 
 def print_exception(exeption):
-    print('----------------------------------------------------------------------------------')
-    print(exeption)
-    print('----------------------------------------------------------------------------------')
-    input("Print enter to continue")
+        print('----------------------------------------------------------------------------------')
+        print(exeption)
+        print('----------------------------------------------------------------------------------')
+        input("Print enter to continue")
 
 def parse_excel_workbook(protocols, wb):
     try:
