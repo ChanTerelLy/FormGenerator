@@ -1,20 +1,16 @@
 from openpyxl import load_workbook
 import os
 from excel_func import *
+from except_func import print_exception
 from sql_func import *
 import argparse
 parser = argparse.ArgumentParser()
 parser.parse_args()
 
-def print_exception(exeption):
-    print('----------------------------------------------------------------------------------')
-    print(exeption)
-    print('----------------------------------------------------------------------------------')
-    input("Print enter to continue")
 
-
-def create_protocol(id_form):
-    table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
+def create_protocol(id_form, table_path=None):
+    if not table_path:
+        table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
     file_name = os.path.splitext(os.path.basename(table_path))[0]
     protocols = {}
     # operation with excel
@@ -22,8 +18,8 @@ def create_protocol(id_form):
         wb = load_workbook(table_path)
         parse_excel_workbook(protocols, wb)  # get data from excel
         check_null_excel_sheet(protocols)
-    except:
-        print_exception(Exception)
+    except Exception as e:
+        print_exception(e)
     # operation with database oracle
     try:
         connection, sql_cursor = connect_MED()
@@ -50,7 +46,6 @@ def create_protocol(id_form):
                 except Exception as e:
                     print(str(protocol_name) + ' :' + str(item_name))
                     print_exception(e)
-                    input("Press enter to continue")
                     continue
 
                 if item_name[2] == 2:
@@ -65,8 +60,8 @@ def create_protocol(id_form):
                             print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer))
                             print_exception(e)
                             continue
-    except:
-        print_exception(Exception)
+    except Exception as e:
+        print_exception(e)
     print('Success')
 
 
@@ -79,7 +74,7 @@ if __name__ == '__main__':
     choice_create_form = input('Create form: yes/no ')
     if choice_create_form == 'yes':
         form_name  = input('Input form name:')
-        sql_create_parent_form(connect_MED(), form_name)
+        sql_create_parent_form(connection, form_name)
         print(sql_get_all_protocol_folders(connection))
     id_form = input('Input code parent form:')
     while True:

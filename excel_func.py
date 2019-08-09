@@ -1,11 +1,6 @@
 from check_func import check_type_element_data, check_answers, check_element, check_type_answer, \
     check_multi_choise
-
-def print_exception(exeption):
-        print('----------------------------------------------------------------------------------')
-        print(exeption)
-        print('----------------------------------------------------------------------------------')
-        input("Print enter to continue")
+from except_func import print_exception
 
 def parse_excel_workbook(protocols, wb):
     try:
@@ -47,8 +42,8 @@ def parse_excel_workbook(protocols, wb):
                 excel_row = [element, element_data, type_answer, multi_choise, answers, type_element_data]
                 protocol_rows.append(excel_row)
             protocols[sheet_name] = protocol_rows
-    except:
-        print_exception(Exception)
+    except Exception as e:
+        print_exception(e)
 
 def check_null_excel_sheet(protocols):
     for i in list(protocols):

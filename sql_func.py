@@ -128,8 +128,7 @@ def sql_get_id_form(connection, id_form):
 
 def sql_get_all_protocol_folders(connection):
     list_folders = connection.cursor().execute("""select code, TEXT from solution_form.form where ROOT_ID is NULL""").fetchall()
-    for code, value in enumerate(list_folders):
-        print(str(code) + ':' + str(value))
+    print(*[str(value) for code, value in enumerate(list_folders)], sep='\n')
 
 def connect_MED():
     connection = cx_Oracle.connect('solution_med/elsoft@med')

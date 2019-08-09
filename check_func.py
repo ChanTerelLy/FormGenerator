@@ -5,6 +5,7 @@ def check_element(element, answers):
     if element:
         element = element.lower()
         if re.search(r'з.*к', element) and answers == None:
+
             element = 0
         elif re.search(r'в.*с', element):
             element = 1
@@ -20,7 +21,7 @@ def check_type_answer(type_answer):
         type_answer = type_answer.lower()
         if re.search(r'с.*й о.*т', type_answer) or re.search(r'простой текст', type_answer):
             type_answer = 0
-        elif re.search(r'з.*[ея] из с.*а', type_answer):
+        elif re.search(r'з.*[ея] из.*с.*а', type_answer):
             type_answer = 2
     else:
         type_answer = 0
@@ -43,7 +44,8 @@ def check_multi_choise(multi_choise):
 
 def check_answers(answers):
     if answers:
-        answers = answers.replace('_x000D_', '')
+        answers = answers.encode('utf-8')
+        answers = str(answers).replace('_x000D_', '')
         answers = answers.split('\n')
         if len(answers) > 1:
             return answers
