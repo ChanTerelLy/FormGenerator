@@ -2,7 +2,8 @@ from check_func import check_type_element_data, check_answers, check_element, ch
     check_multi_choise
 from except_func import print_exception
 
-def parse_excel_workbook(protocols, wb):
+def parse_excel_workbook(wb):
+    protocols = {}
     try:
         for ws in wb.worksheets:
             sheet_name = ''
@@ -44,6 +45,8 @@ def parse_excel_workbook(protocols, wb):
             protocols[sheet_name] = protocol_rows
     except Exception as e:
         print_exception(e)
+    return protocols
+
 
 def check_null_excel_sheet(protocols):
     for i in list(protocols):

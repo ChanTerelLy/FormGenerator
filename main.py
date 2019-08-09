@@ -16,7 +16,7 @@ def create_protocol(id_form, table_path=None):
     # operation with excel
     try:
         wb = load_workbook(table_path)
-        parse_excel_workbook(protocols, wb)  # get data from excel
+        protocols = parse_excel_workbook(wb)  # get data from excel
         check_null_excel_sheet(protocols)
     except Exception as e:
         print_exception(e)

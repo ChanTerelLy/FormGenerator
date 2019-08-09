@@ -30,8 +30,8 @@ def check_type_answer(type_answer):
 
 def check_multi_choise(multi_choise):
     if multi_choise:
-        multi_choise.lower()
-        if re.search(r'да', multi_choise) or re.search(r'/+', multi_choise):
+        multi_choise = multi_choise.lower()
+        if re.search(r'да', multi_choise) or re.search(r'\+', multi_choise):
             multi_choise = 1
         elif re.search(r'н.т', multi_choise) or re.search(r'-', multi_choise):
             multi_choise = 0
@@ -44,11 +44,10 @@ def check_multi_choise(multi_choise):
 
 def check_answers(answers):
     if answers:
-        answers = answers.encode('utf-8')
         answers = str(answers).replace('_x000D_', '')
         answers = answers.split('\n')
         if len(answers) > 1:
-            return answers
+            return list(filter(lambda x: x if x != '' else False, answers))
         else:
             if isinstance(answers[0], str):
                 answers = re.split(r'\s{2,}', answers[0])
@@ -56,7 +55,7 @@ def check_answers(answers):
                     return answers
                 else:
                     answers = re.split(r',', answers[0])
-    elif answers == None:
+    else:
             answers = ['']
     return answers
 
