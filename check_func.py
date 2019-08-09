@@ -44,20 +44,36 @@ def check_multi_choise(multi_choise):
 
 def check_answers(answers):
     if answers:
-        answers = str(answers).replace('_x000D_', '')
-        answers = answers.split('\n')
+        answers = remove_null_answers(is_tab(is_enter(check_x000D_chars(answers))))
         if len(answers) > 1:
-            return list(filter(lambda x: x if x != '' else False, answers))
+            return answers
         else:
             if isinstance(answers[0], str):
-                answers = re.split(r'\s{2,}', answers[0])
-                if len(answers) > 1:
-                    return answers
-                else:
-                    answers = re.split(r',', answers[0])
+                    return remove_null_answers(re.split(r',', answers[0]))
     else:
-            answers = ['']
-    return answers
+            return ['']
+
+
+def check_x000D_chars(answers):
+    return str(answers).replace('_x000D_', '')
+
+
+def remove_null_answers(answers):
+    return list(filter(lambda x: x if x != '' else False, answers))
+
+
+def is_enter(answers):
+    new_answer = []
+    new_answer.extend(answers.split('\n')) if isinstance(answers, str) else [new_answer.extend(answer.split('\n')) for
+                                                                             answer in answers]
+    return new_answer
+
+
+def is_tab(answers):
+    new_answer = []
+    new_answer.extend(answers.split(r'\s{3,}')) if isinstance(answers, str) else [new_answer.extend(re.split(r'\s{3,}', answer)) for
+                                                                             answer in answers]
+    return new_answer
 
 
 def check_type_element_data(type_element_data):

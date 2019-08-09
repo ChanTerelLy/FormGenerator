@@ -43,8 +43,9 @@ class TestCheckFunc(unittest.TestCase):
         по возрасту                                                                     по индивидуальному графику                                         не вакцинирован                                                                    
 
         """)), 3)
-        self.assertEqual(check_func.check_answers(None), 0)
-        self.assertEqual(check_func.check_answers(''), 0)
+        self.assertEqual(check_func.check_answers(None), [''])
+        self.assertEqual(len(check_func.check_answers(""""консультация педиатра, консультация хирурга, УЗ контроль через, УЗ контроль в динамике"
+""")), 4)
 
 
 class TestExcelFunc(unittest.TestCase):
