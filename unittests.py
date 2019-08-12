@@ -65,7 +65,33 @@ class TestExcelFunc(unittest.TestCase):
 
 
 class TestSqlFunc(unittest.TestCase):
-    pass
+    def del_form(self, id):
+        pass
+
+    def del_form_item(self, id):
+        pass
+
+    def del_form_item_value(self, id):
+        pass
+
+    def get_name_by_id(self, sql_cursor, table,  id):
+        return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
+
+
+    def setUp(self):
+        self.connection, self.sql_cursor = sql_func.connect_MED()
+        self.table_FORM = 'solution_form.FORM'
+        self.table_FORM_ITEM = 'solution_form.FORM_ITEM'
+        self.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
+
+    def test_sql_create_parent_form(self):
+        sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
+        last_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, last_id), 'Тестовая Папка')
+
+    def tearDown(self):
+        pass
+
 
 class TestMain(unittest.TestCase):
     def setUp(self):

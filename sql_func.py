@@ -118,6 +118,11 @@ def sql_next_code_form(connection):
                         0])
     return code_form
 
+def sql_get_last_id(connection, table):
+    str = "SELECT MAX(TO_NUMBER(id)) FROM {table} where trim(TRANSLATE(code, '0123456789-,.', ' ')) is null".format(table=table)
+    id_form = int(connection.cursor().execute(str).fetchone()[0])
+    return id_form
+
 
 def sql_get_id_form(connection, id_form):
     parent_id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
