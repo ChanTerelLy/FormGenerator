@@ -67,14 +67,18 @@ def create_protocol(id_form, table_path=None):
     print('Success')
 
 
-if __name__ == '__main__':
-    connection, sql_cursor = connect_MED()
-    print(sql_get_all_protocol_folders(connection)) # get all folders forms
+def CMD_fast_creating(connection):
+    print(sql_get_all_protocol_folders(connection))  # get all folders forms
     choice_create_form = input('Create form: yes/no ')
     if choice_create_form == 'yes':
-        form_name  = input('Input form name:')
+        form_name = input('Input form name:')
         sql_create_parent_form(connection, form_name)
         print(sql_get_all_protocol_folders(connection))
     id_form = input('Input code parent form:')
     while True:
         create_protocol(id_form)
+
+
+if __name__ == '__main__':
+    connection, sql_cursor = connect_MED()
+    CMD_fast_creating(connection)
