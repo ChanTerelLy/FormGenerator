@@ -4,8 +4,6 @@ from excel_func import *
 from except_func import print_exception
 from sql_func import *
 import argparse
-parser = argparse.ArgumentParser()
-parser.parse_args()
 
 
 def create_protocol(id_form, table_path=None):
