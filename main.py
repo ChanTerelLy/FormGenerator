@@ -1,7 +1,7 @@
 from openpyxl import load_workbook
 import os
 from excel_func import *
-from except_func import print_exception
+from except_func import *
 from sql_func import *
 import argparse
 
@@ -60,10 +60,8 @@ def create_protocol(id_form, table_path=None):
                             continue
     except Exception as e:
         print_exception(e)
+    print(exception_count)
     print('Success')
-
-
-
 
 
 if __name__ == '__main__':

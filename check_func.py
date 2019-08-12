@@ -44,7 +44,7 @@ def check_multi_choise(multi_choise):
 
 def check_answers(answers):
     if answers:
-        answers = remove_null_answers(is_tab(is_enter(check_x000D_chars(answers))))
+        answers = remove_null_answers(is_tab(is_enter(check_x000D_chars(char_decoder(answers)))))
         if len(answers) > 1:
             return answers
         else:
@@ -77,7 +77,6 @@ def is_tab(answers):
 
 
 def check_type_element_data(type_element_data):
-    type_element_data = str(type_element_data)
     if re.search('дата', type_element_data.lower()):
         type_element_data = 1
     elif re.search('время', type_element_data.lower()):
@@ -89,3 +88,22 @@ def check_type_element_data(type_element_data):
     else:
         type_element_data = 0
     return type_element_data
+
+def check_choise_is_not_null(protocol_row):
+    if isinstance(protocol_row, list):
+        protocol_row[2] = 0 if protocol_row[2] == 2 and protocol_row[4] == [''] else protocol_row[2]
+    return protocol_row
+
+def is_conclusion(protocol_row):
+    if isinstance(protocol_row, list):
+        protocol_row[0] = 1 if protocol_row[0] == 0 and (re.search('анамнез', protocol_row[1].lower())
+                                 or re.search('заключение', protocol_row[1].lower())) else protocol_row[0]
+    return protocol_row
+
+def char_decoder(string):
+    if string:
+        string = string.replace('α', 'a')
+        string = string.replace('β', 'b')
+        return string
+    else:
+        return string

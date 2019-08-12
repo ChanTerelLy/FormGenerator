@@ -1,5 +1,4 @@
-from check_func import check_type_element_data, check_answers, check_element, check_type_answer, \
-    check_multi_choise
+from check_func import *
 from except_func import print_exception
 
 def parse_excel_workbook(wb):
@@ -23,6 +22,9 @@ def parse_excel_workbook(wb):
                     else:
                         continue
 
+                element_data = char_decoder(str(ws.cell(excel_row, 2).value))
+
+
                 element = check_element(ws.cell(excel_row, 1).value, ws.cell(excel_row, 5).value)
                 # 0 - разделитель
                 # 1 - редактируемый
@@ -41,7 +43,7 @@ def parse_excel_workbook(wb):
                 # Нарушений легочной вентиляции не зарегистрировано
                 # Проба с физической нагрузкой - положительная
                 excel_row = [element, element_data, type_answer, multi_choise, answers, type_element_data]
-                protocol_rows.append(excel_row)
+                protocol_rows.append(is_conclusion(check_choise_is_not_null(excel_row)))
             protocols[sheet_name] = protocol_rows
     except Exception as e:
         print_exception(e)
