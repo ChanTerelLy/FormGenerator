@@ -135,3 +135,21 @@ def connect_MED():
     print(connection.version)
     sql_cursor = connection.cursor()
     return connection, sql_cursor
+
+
+def sql_get_id_form_item_value(connection):
+    return int(
+        connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                                    " 'FORM_ITEM_VALUE') FROM DUAL").fetchone()[0])
+
+
+def sql_get_id_form_item(sql_cursor):
+    return int(
+        sql_cursor.execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
+                           " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
+
+
+def sql_get_id_by_code(code_form, connection):
+    return int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
+                                           "code = '{code_form}'"
+                                           " and rownum = 1".format(code_form=code_form)).fetchone()[0])
