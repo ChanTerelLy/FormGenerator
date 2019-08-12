@@ -68,7 +68,14 @@ class TestSqlFunc(unittest.TestCase):
     pass
 
 class TestMain(unittest.TestCase):
-    pass
+    def setUp(self):
+        self.connection, self.sql_cursor = sql_func.connect_MED()
+
+    def test_connect_MED(self):
+        self.assertGreater(int(self.connection.version.split('.')[0]), 11)
+
+    def test_sql_get_all_protocol_folders(self):
+        self.assertIsInstance(sql_func.sql_get_all_protocol_folders(self.connection))
 
 if __name__ == "__main__":
     unittest.main()
