@@ -19,10 +19,13 @@ def check_element(element, answers):
 def check_type_answer(type_answer):
     if type_answer:
         type_answer = type_answer.lower()
-        if re.search(r'с.*й о.*т', type_answer) or re.search(r'простой текст', type_answer):
-            type_answer = 0
-        elif re.search(r'з.*[ея] из.*с.*а', type_answer):
+        # check if will need by the way
+        # if re.search(r'с.*й о.*т', type_answer) or re.search(r'простой текст', type_answer):
+        #     type_answer = 0
+        if re.search(r'з.*[ея] из.*с.*а', type_answer):
             type_answer = 2
+        else:
+            type_answer = 0
     else:
         type_answer = 0
     return type_answer
@@ -104,6 +107,7 @@ def char_decoder(string):
     if string:
         string = string.replace('α', 'a')
         string = string.replace('β', 'b')
+        string = string.replace('³', '3')
         return string
     else:
         return string

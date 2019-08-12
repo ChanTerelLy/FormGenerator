@@ -11,12 +11,15 @@ def create_protocol(id_form, table_path=None):
         table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
     file_name = os.path.splitext(os.path.basename(table_path))[0]
     protocols = {}
+    exception_count = 0
     # operation with excel
     try:
         wb = load_workbook(table_path)
         protocols = parse_excel_workbook(wb)  # get data from excel
         check_null_excel_sheet(protocols)
     except Exception as e:
+        exception_count = +1
+        print('Check excel parse block')
         print_exception(e)
     # operation with database oracle
     try:
@@ -31,6 +34,8 @@ def create_protocol(id_form, table_path=None):
                                                      "code = '{code_form}'"
                                                      " and rownum = 1".format(code_form=code_form)).fetchone()[0])
             except Exception as e:
+                print('Problem with creation FORM')
+                exception_count=+1
                 print(str(protocol_name))
                 print_exception(e)
                 continue
@@ -42,6 +47,8 @@ def create_protocol(id_form, table_path=None):
                         connection.cursor().execute("SELECT SOLUTION_MED.PKG_GLOBAL.GET_NEXT_ID('SOLUTION_FORM',"
                                                     " 'FORM_ITEM') - 1 FROM DUAL").fetchone()[0])
                 except Exception as e:
+                    print('Problem with insert form_item')
+                    exception_count = +1
                     print(str(protocol_name) + ' :' + str(item_name))
                     print_exception(e)
                     continue
@@ -55,12 +62,16 @@ def create_protocol(id_form, table_path=None):
                             sql_insert_form_item_value(answer, sql_cursor, get_if_form_item, get_if_form_item_value,
                                                        index)
                         except Exception as e:
+                            print('Problem with insert form_item_value')
+                            exception_count = +1
                             print(str(protocol_name) + ' : ' + str(item_name) + ' : ' + str(answer))
                             print_exception(e)
                             continue
     except Exception as e:
+        print('Problem with DATABASE')
+        exception_count = +1
         print_exception(e)
-    print(exception_count)
+    print('Exception_count: ', exception_count)
     print('Success')
 
 
