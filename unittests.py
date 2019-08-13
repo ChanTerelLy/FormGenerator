@@ -65,18 +65,7 @@ class TestExcelFunc(unittest.TestCase):
 
 
 class TestSqlFunc(unittest.TestCase):
-    def del_form(self, id):
-        pass
-
-    def del_form_item(self, id):
-        pass
-
-    def del_form_item_value(self, id):
-        pass
-
-    def get_name_by_id(self, sql_cursor, table,  id):
-        return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
-
+    remove_dic = {}
 
     def setUp(self):
         self.connection, self.sql_cursor = sql_func.connect_MED()
@@ -88,9 +77,17 @@ class TestSqlFunc(unittest.TestCase):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
         last_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
         self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, last_id), 'Тестовая Папка')
+        self.del_by_id(self.sql_cursor, self.table_FORM, last_id)
 
     def tearDown(self):
         pass
+
+    def del_by_id(self,sql_cursor, table,  id):
+        sql_cursor.execute("delete FROM {table} where id = '{id}'".format(table=table, id=id))
+        sql_cursor.execute('COMMIT')
+
+    def get_name_by_id(self, sql_cursor, table,  id):
+        return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
 
 
 class TestMain(unittest.TestCase):
