@@ -65,13 +65,13 @@ class TestExcelFunc(unittest.TestCase):
 
 
 class TestSqlFunc(unittest.TestCase):
-    remove_dic = {}
 
-    def setUp(self):
-        self.connection, self.sql_cursor = sql_func.connect_MED()
-        self.table_FORM = 'solution_form.FORM'
-        self.table_FORM_ITEM = 'solution_form.FORM_ITEM'
-        self.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
+    @classmethod
+    def setUp(cls):
+        cls.connection, cls.sql_cursor = sql_func.connect_MED()
+        cls.table_FORM = 'solution_form.FORM'
+        cls.table_FORM_ITEM = 'solution_form.FORM_ITEM'
+        cls.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
 
     def test_sql_create_parent_form(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')

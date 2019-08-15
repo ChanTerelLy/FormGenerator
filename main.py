@@ -4,6 +4,8 @@ from excel_func import *
 from except_func import *
 from sql_func import *
 
+def __init__(self):
+    self.id_form = id_form
 
 def create_protocol(id_form, table_path=None):
     if not table_path:
@@ -78,7 +80,21 @@ def CMD_fast_creating(connection):
     while True:
         create_protocol(id_form)
 
+import ctypes, sys
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
 
 if __name__ == '__main__':
-    connection, sql_cursor = connect_MED()
-    CMD_fast_creating(connection)
+    if is_admin():
+        # Code of your program here
+        connection, sql_cursor = connect_MED()
+        CMD_fast_creating(connection)
+    else:
+        # Re-run the program with admin rights
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)

@@ -100,7 +100,8 @@ def check_choise_is_not_null(protocol_row):
 def is_conclusion(protocol_row):
     if isinstance(protocol_row, list):
         protocol_row[0] = 1 if protocol_row[0] == 0 and (re.search('анамнез', protocol_row[1].lower())
-                                 or re.search('заключение', protocol_row[1].lower())) else protocol_row[0]
+                                 or re.search('заключение', protocol_row[1].lower()) or
+                                 re.search('жалоб', protocol_row[1].lower())) else protocol_row[0]
     return protocol_row
 
 def char_decoder(string):

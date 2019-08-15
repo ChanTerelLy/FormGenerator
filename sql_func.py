@@ -1,5 +1,5 @@
 import cx_Oracle
-
+import excel_func
 
 def sql_insert_form_item_value(answer, create_form, get_if_form_item, get_if_form_item_value, index):
     insert_form_item_value = """
@@ -136,10 +136,15 @@ def sql_get_all_protocol_folders(connection):
     print(*[str(value) for code, value in enumerate(list_folders)], sep='\n')
 
 def connect_MED():
-    connection = cx_Oracle.connect('solution_med/elsoft@med')
-    print(connection.version)
-    sql_cursor = connection.cursor()
-    return connection, sql_cursor
+    try:
+        connection = cx_Oracle.connect('solution_med/elsoft@med')
+    except Exception as e:
+        print('PROBLEMS WITH CONNECTION DB')
+        excel_func.print_exception(e)
+    else:
+        print(connection.version)
+        sql_cursor = connection.cursor()
+        return connection, sql_cursor
 
 
 def sql_get_id_form_item_value(connection):

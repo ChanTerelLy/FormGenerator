@@ -6,18 +6,20 @@ def parse_excel_workbook(wb):
     try:
         for ws in wb.worksheets:
             sheet_name = ''
-            for i in range(1, 3):  # check name protocol in the first three excel_row
+            protocol_rows = []
+
+            for i in range(1, 3):  # find name protocol in the first three excel_row
                 if ws.cell(i, 1).value:
                     sheet_name = ws.cell(i, 1).value
                     break
-            protocol_rows = []
+
             for excel_row in range(5, ws.max_row):  # 5 excel_row is begin protocol_row
                 element_data = ws.cell(excel_row, 2).value
                 type_element_data = check_type_element_data(element_data) if element_data else False
                 if element_data == None:
                     if ws.cell(excel_row, 5).value:
                         for i in check_answers(ws.cell(excel_row, 5).value):
-                            protocol_rows[len(protocol_rows) - 1][4].append(i)
+                            protocol_rows[len(protocol_rows) - 1][4].append(i) # append row without header to higher row
                         continue
                     else:
                         continue
