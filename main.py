@@ -4,8 +4,6 @@ from excel_func import *
 from except_func import *
 from sql_func import *
 
-def __init__(self):
-    self.id_form = id_form
 
 def create_protocol(id_form, table_path=None):
     if not table_path:

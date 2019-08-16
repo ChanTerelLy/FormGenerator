@@ -56,3 +56,4 @@ def check_null_excel_sheet(protocols):
     for i in list(protocols):
         if len(protocols[i]) == 0:
             del protocols[i]
+    return protocols
