@@ -1,7 +1,7 @@
 import cx_Oracle
 import excel_func
 
-def sql_insert_form_item_value(answer, create_form, get_if_form_item, get_if_form_item_value, index):
+def sql_insert_form_item_value(answer, sql_cursor, id_form_item, id_form_item_value, index):
     insert_form_item_value = """
                             INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
                             ID
@@ -30,11 +30,11 @@ def sql_insert_form_item_value(answer, create_form, get_if_form_item, get_if_for
                             ,''
                             ,NULL
                             )
-                            """.format(form_item=get_if_form_item,
-                                       form_item_value=get_if_form_item_value,
+                            """.format(form_item=id_form_item,
+                                       form_item_value=id_form_item_value,
                                        answer=answer, name_answer=answer, code=index, sort_code=index)
-    create_form.execute(insert_form_item_value)
-    create_form.execute('COMMIT')
+    sql_cursor.execute(insert_form_item_value)
+    sql_cursor.execute('COMMIT')
 
 
 def sql_insert_form_item(create_form, id, index, item_name):
@@ -142,7 +142,6 @@ def connect_MED():
         print('PROBLEMS WITH CONNECTION DB')
         excel_func.print_exception(e)
     else:
-        print(connection.version)
         sql_cursor = connection.cursor()
         return connection, sql_cursor
 

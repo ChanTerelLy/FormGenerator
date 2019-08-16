@@ -66,28 +66,99 @@ class TestExcelFunc(unittest.TestCase):
 
 class TestSqlFunc(unittest.TestCase):
 
-    @classmethod
-    def setUp(cls):
-        cls.connection, cls.sql_cursor = sql_func.connect_MED()
-        cls.table_FORM = 'solution_form.FORM'
-        cls.table_FORM_ITEM = 'solution_form.FORM_ITEM'
-        cls.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
+    def setUp(self):
+        self.connection, self.sql_cursor = sql_func.connect_MED()
+        self.table_FORM = 'solution_form.FORM'
+        self.table_FORM_ITEM = 'solution_form.FORM_ITEM'
+        self.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
 
     def test_sql_create_parent_form(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
-        last_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
-        self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, last_id), 'Тестовая Папка')
-        self.del_by_id(self.sql_cursor, self.table_FORM, last_id)
+        parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, parent_id), 'Тестовая Папка')
+        self.del_by_id(self.sql_cursor, parent_id)
 
-    def tearDown(self):
-        pass
+    def test_sql_create_children_form(self):
+        sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
+        parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        sql_func.sql_create_children_form(self.connection, parent_id, 'Тестовый протокол')
+        children_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, children_id), 'Тестовый протокол')
+        self.del_by_id(self.sql_cursor, parent_id)
 
-    def del_by_id(self,sql_cursor, table,  id):
-        sql_cursor.execute("delete FROM {table} where id = '{id}'".format(table=table, id=id))
+    def test_sql_insert_form_item(self):
+        sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
+        parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        code = sql_func.sql_create_children_form(self.connection, parent_id, 'Тестовый протокол')
+        id = sql_func.sql_get_id_by_code(code, self.connection)
+        sql_func.sql_insert_form_item(self.sql_cursor, id, 1, [0, 'Тестова строка', 0, 0, [''], 0])
+        row = self.get_sql_form_item_row(self.sql_cursor, id)
+        self.assertEqual(row[0][15],  'Тестова строка')
+        self.del_by_id(self.sql_cursor, parent_id)
+
+    def test_sql_insert_form_item_value(self):
+        sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
+        parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        code = sql_func.sql_create_children_form(self.connection, parent_id, 'Тестовый протокол')
+        id_children = sql_func.sql_get_id_by_code(code, self.connection)
+        sql_func.sql_insert_form_item(self.sql_cursor, id_children, 1, [0, 'Тестова строка', 0, 0,
+                                                               ['Тестовый ответ 1', 'Тестовый ответ 2'], 0])
+        id_form_item = sql_func.sql_get_id_form_item(self.sql_cursor)
+        id_form_item_value = sql_func.sql_get_id_form_item_value(self.connection)
+        sql_func.sql_insert_form_item_value('Тестовый ответ', self.sql_cursor,
+                                            id_form_item, id_form_item_value, 1)
+        rows = self.get_sql_form_item_value_row(self.sql_cursor, id_form_item)
+        self.assertEqual(len(rows), 1)
+        self.del_by_id(self.sql_cursor, parent_id)
+
+
+    def del_by_id(self, sql_cursor, id):
+        sql_cursor.execute("""DECLARE rc pkg_global.ref_cursor_type;
+                BEGIN p_content.delete_form('{}', rc); END;""".format(id))
         sql_cursor.execute('COMMIT')
 
     def get_name_by_id(self, sql_cursor, table,  id):
         return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
+
+    def get_sql_form_item_row(self, sql_cursor, id):
+        return sql_cursor.execute("""
+        SELECT t.*
+      ,decode(NVL(t.color, 0)
+             ,0, (SELECT color FROM solution_form.form WHERE id = t.form_id)
+             ,t.color) AS form_color
+      ,qg.text AS question_group_text
+  FROM solution_form.form_item     t
+      ,solution_med.question_group qg
+ WHERE ('' IS NULL OR t.id = '')
+   AND ('{id}' IS NULL OR t.form_id = '{id}')
+   AND ('' IS NULL OR t.status = '')
+   AND qg.keyid(+) = t.group_id
+ ORDER BY t.sortcode
+        """.format(id=id)).fetchall()
+
+
+    def get_sql_form_item_value_row(self, sql_cursor, id):
+        return sql_cursor.execute("""
+        SELECT fiv.*
+      ,(SELECT s.keyid
+          FROM srvdep                             s
+              ,solution_form.form_item_value_link fivl
+         WHERE fivl.link_id = s.keyid
+           AND fiv.id = fivl.form_item_value_id) AS srvdepid
+      ,(SELECT s.text
+          FROM srvdep                             s
+              ,solution_form.form_item_value_link fivl
+         WHERE fivl.link_id = s.keyid
+           AND fiv.id = fivl.form_item_value_id) AS srvdep
+      ,(SELECT fivl.id
+          FROM solution_form.form_item_value_link fivl
+         WHERE fiv.id = fivl.form_item_value_id) AS value_link
+  FROM solution_form.form_item_value fiv
+ WHERE ('' IS NULL OR fiv.id = '')
+   AND ('{id}' IS NULL OR fiv.form_item_id = '{id}')
+   AND (NULL IS NULL OR fiv.text = NULL)
+ ORDER BY fiv.sortcode
+           """.format(id=id)).fetchall()
 
 
 class TestMain(unittest.TestCase):
@@ -98,7 +169,6 @@ class TestMain(unittest.TestCase):
         self.assertGreater(int(self.connection.version.split('.')[0]), 11)
 
     def test_sql_get_all_protocol_folders(self):
-        #self.assertIsInstance(sql_func.sql_get_all_protocol_folders(self.connection))
         pass
 
 if __name__ == "__main__":

@@ -98,3 +98,5 @@ if __name__ == '__main__':
     else:
         # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        connection, sql_cursor = connect_MED()
+        CMD_fast_creating(connection)
