@@ -63,17 +63,20 @@ def create_protocol(id_form, table_path=None):
         print('Problem with DATABASE')
         exception_count = +1
         print_exception(e)
-    print('Exception_count: ', exception_count)
-    print('Success')
-
+    if not exception_count:
+        print('Success')
+    else:
+        print('Exception_count: ', exception_count)
+        print("Protocol create partly or doesn't create")
+    return exception_count
 
 def CMD_fast_creating(connection):
-    print(sql_get_all_protocol_folders(connection))  # get all folders forms
+    print(*sql_get_all_protocol_folders(connection), sep='\n')  # get all folders forms
     choice_create_form = input('Create form: yes/no ')
     if choice_create_form == 'yes':
         form_name = input('Input form name:')
         sql_create_parent_form(connection, form_name)
-        print(sql_get_all_protocol_folders(connection))
+        print(*sql_get_all_protocol_folders(connection), sep='\n')
     id_form = input('Input code parent form:')
     while True:
         create_protocol(id_form)

@@ -72,11 +72,18 @@ class TestSqlFunc(unittest.TestCase):
         self.table_FORM_ITEM = 'solution_form.FORM_ITEM'
         self.table_FORM_ITEM_VALUE = 'solution_form.FORM_ITEM_VALUE'
 
+    def test_connect_MED(self):
+        self.assertGreater(int(self.connection.version.split('.')[0]), 11)
+
+    def test_sql_get_all_protocol_folders(self):
+        protocol_folder = sql_func.sql_get_all_protocol_folders(self.connection)
+        self.assertIsInstance(protocol_folder, list)
+
     def test_sql_create_parent_form(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
         parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
         self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, parent_id), 'Тестовая Папка')
-        self.del_by_id(self.sql_cursor, parent_id)
+        sql_func.del_by_id(self.sql_cursor, parent_id)
 
     def test_sql_create_children_form(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
@@ -84,7 +91,7 @@ class TestSqlFunc(unittest.TestCase):
         sql_func.sql_create_children_form(self.connection, parent_id, 'Тестовый протокол')
         children_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
         self.assertEqual(self.get_name_by_id(self.sql_cursor, self.table_FORM, children_id), 'Тестовый протокол')
-        self.del_by_id(self.sql_cursor, parent_id)
+        sql_func.del_by_id(self.sql_cursor, parent_id)
 
     def test_sql_insert_form_item(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
@@ -94,7 +101,7 @@ class TestSqlFunc(unittest.TestCase):
         sql_func.sql_insert_form_item(self.sql_cursor, id, 1, [0, 'Тестова строка', 0, 0, [''], 0])
         row = self.get_sql_form_item_row(self.sql_cursor, id)
         self.assertEqual(row[0][15],  'Тестова строка')
-        self.del_by_id(self.sql_cursor, parent_id)
+        sql_func.del_by_id(self.sql_cursor, parent_id)
 
     def test_sql_insert_form_item_value(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
@@ -109,13 +116,9 @@ class TestSqlFunc(unittest.TestCase):
                                             id_form_item, id_form_item_value, 1)
         rows = self.get_sql_form_item_value_row(self.sql_cursor, id_form_item)
         self.assertEqual(len(rows), 1)
-        self.del_by_id(self.sql_cursor, parent_id)
+        sql_func.del_by_id(self.sql_cursor, parent_id)
 
 
-    def del_by_id(self, sql_cursor, id):
-        sql_cursor.execute("""DECLARE rc pkg_global.ref_cursor_type;
-                BEGIN p_content.delete_form('{}', rc); END;""".format(id))
-        sql_cursor.execute('COMMIT')
 
     def get_name_by_id(self, sql_cursor, table,  id):
         return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
@@ -160,16 +163,21 @@ class TestSqlFunc(unittest.TestCase):
  ORDER BY fiv.sortcode
            """.format(id=id)).fetchall()
 
-
+#
 class TestMain(unittest.TestCase):
     def setUp(self):
         self.connection, self.sql_cursor = sql_func.connect_MED()
+        self.table_FORM = 'solution_form.FORM'
+        self.path = 'test_protocol.xlsx'
 
-    def test_connect_MED(self):
-        self.assertGreater(int(self.connection.version.split('.')[0]), 11)
+    def test_create_protocol(self):
+        sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
+        parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
+        code = sql_func.sql_create_children_form(self.connection, parent_id, 'Тестовый протокол')
+        exception = main.create_protocol(code, self.path)
+        self.assertEqual(exception, 0)
+        sql_func.del_by_id(self.sql_cursor, parent_id)
 
-    def test_sql_get_all_protocol_folders(self):
-        pass
 
 if __name__ == "__main__":
     unittest.main()

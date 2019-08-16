@@ -133,7 +133,7 @@ def sql_get_id_form(connection, id_form):
 
 def sql_get_all_protocol_folders(connection):
     list_folders = connection.cursor().execute("""select code, TEXT from solution_form.form where ROOT_ID is NULL""").fetchall()
-    print(*[str(value) for code, value in enumerate(list_folders)], sep='\n')
+    return [str(value) for code, value in enumerate(list_folders)]
 
 def connect_MED():
     try:
@@ -162,3 +162,8 @@ def sql_get_id_by_code(code_form, connection):
     return int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
                                            "code = '{code_form}'"
                                            " and rownum = 1".format(code_form=code_form)).fetchone()[0])
+
+def del_by_id(sql_cursor, id):
+        sql_cursor.execute("""DECLARE rc pkg_global.ref_cursor_type;
+                BEGIN p_content.delete_form('{}', rc); END;""".format(id))
+        sql_cursor.execute('COMMIT')
