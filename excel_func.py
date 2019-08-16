@@ -48,6 +48,7 @@ def parse_excel_workbook(wb):
                 protocol_rows.append(is_conclusion(check_choise_is_not_null(excel_row)))
             protocols[sheet_name] = protocol_rows
     except Exception as e:
+        print('Problem with parse Excel')
         print_exception(e)
     return protocols
 
