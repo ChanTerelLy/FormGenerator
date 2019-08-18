@@ -4,7 +4,6 @@ from excel_func import *
 from except_func import *
 from sql_func import *
 
-
 def create_protocol(id_form, table_path=None):
     if not table_path:
         table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console

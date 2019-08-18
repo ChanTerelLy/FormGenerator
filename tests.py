@@ -1,8 +1,10 @@
+import sys
 import unittest
 import main
 import check_func
 import excel_func
 import sql_func
+
 
 class TestCheckFunc(unittest.TestCase):
 
