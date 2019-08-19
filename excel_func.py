@@ -15,7 +15,7 @@ def parse_excel_workbook(wb):
 
             for excel_row in range(5, ws.max_row):  # 5 excel_row is begin protocol_row
                 element_data = ws.cell(excel_row, 2).value
-                type_element_data = check_type_element_data(element_data) if element_data else False
+                type_element_data = check_type_element_data(str(element_data)) if element_data else False
                 if element_data == None:
                     if ws.cell(excel_row, 5).value:
                         for i in check_answers(ws.cell(excel_row, 5).value):
