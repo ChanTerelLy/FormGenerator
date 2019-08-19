@@ -87,15 +87,16 @@ def sql_insert_form_item(create_form, id, index, item_name):
     create_form.execute(insert_form_item)
 
 
-def sql_create_children_form(connection, parent_id, protocol_name):
+def sql_create_children_form(connection, parent_id, protocol_name, report_list_id=42):
     code_form = sql_next_code_form(connection)
     add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
                " BEGIN p_content.save_form(" \
                "NULL, NULL, {parent_id}, {id_form}," \
                " {id_form},  '{protocol_name}', ''," \
-               " 0.0, 1, 1, 0," \
-               " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
-                                                               id_form=code_form, parent_id=parent_id)
+               " 0.0, 1, 1, 1," \
+               " '{report_list_id}', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
+                                                               id_form=code_form, parent_id=parent_id,
+                                                                             report_list_id=report_list_id)
     connection.cursor().execute(add_form)
     return  code_form
 
