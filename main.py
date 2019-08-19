@@ -6,7 +6,7 @@ from sql_func import *
 
 def create_protocol(id_form, table_path=None):
     if not table_path:
-        table_path = input('Input table path:')[1:-1]  # substring for drag and drop into console
+        table_path = input('Input table path:').replace('"', '')  # substring for drag and drop into console
     file_name = os.path.splitext(os.path.basename(table_path))[0]
     protocols = {}
     exception_count = 0
@@ -88,6 +88,32 @@ def is_admin():
     except:
         return False
 
+def get_all_files_in_dir(path):
+    folders = {}
+    # r=root, d=directories, f = files
+    for r, d, f in os.walk(path):
+        folders[os.path.basename(r)] = d
+    for key in [key for key, value in folders.items() if value == []]: del folders[key]
+    files = {}
+    for r, d, f in os.walk(path):
+        file_path_list = []
+        for file in f:
+            if '.xlsx' in file:
+                file_path_list.append(os.path.join(r, file))
+        files[os.path.basename(r)] = file_path_list
+    for key in [key for key, value in files.items() if value == []]: del files[key]
+    return folders, files
+
+def create_folders(connection, dict):
+    for p_folder, ch_folders in dict.items():
+        sql_create_parent_form(connection, p_folder)
+        parent_folders = sql_get_all_protocol_folders(connection)
+        for name in ch_folders:
+            name_id = None
+            for t in parent_folders:
+                if p_folder in t:
+                    name_id = t[0]
+            sql_create_children_form(connection, name_id, name)
 
 
 if __name__ == '__main__':
@@ -98,5 +124,3 @@ if __name__ == '__main__':
     else:
         # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        connection, sql_cursor = connect_MED()
-        CMD_fast_creating(connection)
