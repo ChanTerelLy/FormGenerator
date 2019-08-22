@@ -1,5 +1,5 @@
 import unittest
-from generator import main, sql_func, excel_func, check_func
+from generator import main, sql_func, excel_func, check_func, except_func
 
 
 class TestCheckFunc(unittest.TestCase):
@@ -168,6 +168,7 @@ class TestMain(unittest.TestCase):
         self.table_FORM = 'solution_form.FORM'
         self.path = 'test_protocol.xlsx'
 
+    @except_func.my_logger
     def test_create_protocol(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
         parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)
