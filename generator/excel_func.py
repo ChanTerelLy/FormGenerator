@@ -1,5 +1,5 @@
 from generator.check_func import *
-from generator.except_func import print_exception
+from generator.except_func import *
 def parse_excel_workbook(wb):
     protocols = {}
     try:
