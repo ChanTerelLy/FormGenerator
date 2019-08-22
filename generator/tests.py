@@ -119,10 +119,10 @@ class TestSqlFunc(unittest.TestCase):
 
 
     def get_name_by_id(self, sql_cursor, table,  id):
-        return sql_cursor.execute("SELECT TEXT FROM {table} where id = '{id}'".format(table=table, id=id)).fetchone()[0]
+        return sql_cursor.execute(f"SELECT TEXT FROM {table} where id = '{id}'").fetchone()[0]
 
     def get_sql_form_item_row(self, sql_cursor, id):
-        return sql_cursor.execute("""
+        return sql_cursor.execute(f"""
         SELECT t.*
       ,decode(NVL(t.color, 0)
              ,0, (SELECT color FROM solution_form.form WHERE id = t.form_id)
@@ -135,11 +135,11 @@ class TestSqlFunc(unittest.TestCase):
    AND ('' IS NULL OR t.status = '')
    AND qg.keyid(+) = t.group_id
  ORDER BY t.sortcode
-        """.format(id=id)).fetchall()
+        """).fetchall()
 
 
     def get_sql_form_item_value_row(self, sql_cursor, id):
-        return sql_cursor.execute("""
+        return sql_cursor.execute(f"""
         SELECT fiv.*
       ,(SELECT s.keyid
           FROM srvdep                             s
@@ -159,7 +159,7 @@ class TestSqlFunc(unittest.TestCase):
    AND ('{id}' IS NULL OR fiv.form_item_id = '{id}')
    AND (NULL IS NULL OR fiv.text = NULL)
  ORDER BY fiv.sortcode
-           """.format(id=id)).fetchall()
+           """).fetchall()
 
 #
 class TestMain(unittest.TestCase):
@@ -168,7 +168,7 @@ class TestMain(unittest.TestCase):
         self.table_FORM = 'solution_form.FORM'
         self.path = 'test_protocol.xlsx'
 
-    @except_func.my_logger
+
     def test_create_protocol(self):
         sql_func.sql_create_parent_form(self.connection, 'Тестовая Папка')
         parent_id = sql_func.sql_get_last_id(self.connection, self.table_FORM)

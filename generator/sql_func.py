@@ -1,8 +1,8 @@
 import cx_Oracle
 from generator.except_func import print_exception
 
-def sql_insert_form_item_value(answer, sql_cursor, id_form_item, id_form_item_value, index):
-    insert_form_item_value = """
+def sql_insert_form_item_value(answer, sql_cursor, id_form_item, id_form_item_value, index): # index is sort number
+    insert_form_item_value = f"""
                             INSERT INTO SOLUTION_FORM.FORM_ITEM_VALUE (
                             ID
                             ,FORM_ITEM_ID
@@ -17,22 +17,20 @@ def sql_insert_form_item_value(answer, sql_cursor, id_form_item, id_form_item_va
                             ,ROOT_ID
                             ,IGNORE_TEXT
                             ) VALUES (
-                            '{form_item_value}'
-                            ,'{form_item}'
-                            ,'{code}'
-                            , {sort_code}
+                            '{id_form_item}'
+                            ,'{id_form_item_value}'
+                            ,'{index}'
+                            , {index}
                             ,'{answer}'
                             ,''
                             ,NULL
                             ,1
                             ,0
-                            ,'{name_answer}'
+                            ,'{answer}'
                             ,''
                             ,NULL
                             )
-                            """.format(form_item=id_form_item,
-                                       form_item_value=id_form_item_value,
-                                       answer=answer, name_answer=answer, code=index, sort_code=index)
+                            """
     sql_cursor.execute(insert_form_item_value)
     sql_cursor.execute('COMMIT')
 
@@ -89,46 +87,41 @@ def sql_insert_form_item(create_form, id, index, item_name):
 
 def sql_create_children_form(connection, parent_id, protocol_name, report_list_id=42):
     code_form = sql_next_code_form(connection)
-    add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
-               " BEGIN p_content.save_form(" \
-               "NULL, NULL, {parent_id}, {id_form}," \
-               " {id_form},  '{protocol_name}', ''," \
-               " 0.0, 1, 1, 1," \
-               " '{report_list_id}', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
-                                                               id_form=code_form, parent_id=parent_id,
-                                                                             report_list_id=report_list_id)
+    add_form = f"""
+    DECLARE
+        rc pkg_global.ref_cursor_type;
+    BEGIN
+        p_content.save_form(NULL, NULL, {parent_id}, {code_form}, {code_form}, '{protocol_name}', '', 0.0, 1, 1, 1," \
+               " '{report_list_id}', NULL, NULL, 0, 0, rc);COMMIT;END;"""
     connection.cursor().execute(add_form)
     return  code_form
 
 def sql_create_parent_form(connection, protocol_name):
     code_form = sql_next_code_form(connection)
-    add_form = "DECLARE rc pkg_global.ref_cursor_type;" \
-               " BEGIN p_content.save_form(" \
-               "NULL, NULL, NULL, {id_form}," \
-               " {id_form},  '{protocol_name}', ''," \
-               " 0.0, 1, 1, 0," \
-               " '', NULL, NULL, 0, 0, rc);COMMIT;END;".format(protocol_name=str(protocol_name),
-                                                               id_form=code_form)
+    add_form = f"DECLARE rc pkg_global.ref_cursor_type;" \
+               f" BEGIN p_content.save_form(" \
+               f"NULL, NULL, NULL, {code_form}," \
+               f" {code_form},  '{protocol_name}', ''," \
+               f" 0.0, 1, 1, 0," \
+               f" '', NULL, NULL, 0, 0, rc);COMMIT;END;"
     connection.cursor().execute(add_form)
     return code_form
 
 
 def sql_next_code_form(connection):
     code_form = int(connection.cursor().execute("SELECT MAX(TO_NUMBER(code)) + 1 FROM solution_form.form where"
-                                                " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[
-                        0])
+                                                " trim(TRANSLATE(code, '0123456789-,.', ' ')) is null").fetchone()[0])
     return code_form
 
 def sql_get_last_id(connection, table):
-    str = "SELECT MAX(TO_NUMBER(id)) FROM {table} where trim(TRANSLATE(code, '0123456789-,.', ' ')) is null".format(table=table)
+    str = f"SELECT MAX(TO_NUMBER(id)) FROM {table} where trim(TRANSLATE(code, '0123456789-,.', ' ')) is null"
     id_form = int(connection.cursor().execute(str).fetchone()[0])
     return id_form
 
 
 def sql_get_id_form(connection, id_form):
-    parent_id = int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
-                                                "code ='{id_form}' and rownum = 1".format(id_form=id_form)).fetchone()[
-                        0])
+    parent_id = int(connection.cursor().execute(f"select id from SOLUTION_FORM.FORM where "
+                                                f"code ='{id_form}' and rownum = 1").fetchone()[0])
     return parent_id
 
 
@@ -160,11 +153,11 @@ def sql_get_id_form_item(sql_cursor):
 
 
 def sql_get_id_by_code(code_form, connection):
-    return int(connection.cursor().execute("select id from SOLUTION_FORM.FORM where "
-                                           "code = '{code_form}'"
-                                           " and rownum = 1".format(code_form=code_form)).fetchone()[0])
+    return int(connection.cursor().execute(f"select id from SOLUTION_FORM.FORM where "
+                                           f"code = '{code_form}'"
+                                           f" and rownum = 1").fetchone()[0])
 
 def del_by_id(sql_cursor, id):
-        sql_cursor.execute("""DECLARE rc pkg_global.ref_cursor_type;
-                BEGIN p_content.delete_form('{}', rc); END;""".format(id))
+        sql_cursor.execute(f"""DECLARE rc pkg_global.ref_cursor_type;
+                BEGIN p_content.delete_form('{id}', rc); END;""")
         sql_cursor.execute('COMMIT')
