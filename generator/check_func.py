@@ -46,7 +46,7 @@ def check_multi_choise(multi_choise):
 
 
 def check_answers(answers):
-    if answers and answers != '\n' and answers != '\t':
+    if str(answers).strip() and answers != '\n' and answers != '\t':
         answers = remove_null_answers(is_tab(is_enter(check_x000D_chars(char_decoder(answers)))))
         if len(answers) > 1:
             return answers
