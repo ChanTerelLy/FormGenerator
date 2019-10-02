@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5f64d381-0293-4d05-875e-7dd45f8fad37" name="Default Changelist" comment="" />
+    <list id="f34fce58-e786-4c82-bc96-ce9304808a77" name="Revert &quot;refactor&quot;" comment="Revert &quot;refactor&quot;&#10;&#10;This reverts commit 8f5a4cfe" />
+    <list id="e93f91cb-f1c9-4bdb-af05-19a3c8c41acc" name="Revert &quot;refactor&quot;-2" comment="Revert &quot;refactor&quot;&#10;&#10;This reverts commit 8f5a4cfe" />
+    <list id="5a87862d-a4a9-4555-87cb-215cddb488ee" name="Revert &quot;string refactor&quot;" comment="Revert &quot;string refactor&quot;&#10;&#10;This reverts commit cbc07309" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="FormGenerator" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Setup Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="55d4d86b491249e7681ba4a5d1a54e2ee3e039a8" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1P2tvKPOskl6MDJGAKhAj4MjB0Z" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings>
+        <option name="useSoftWraps" value="true" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\FormGenerator" />
+      <recent name="C:\Users\Roman\OneDrive - Северный Арктический Федеральный Университет\MED\FormGenerator\generator" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests in tests.py">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="FormGenerator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Roman\AppData\Local\Programs\Python\Python37-32\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in tests.py (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="FormGenerator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in tests.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="FormGenerator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/generator/tests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests in tests.py (1)" />
+        <item itemvalue="Python tests.Unittests in tests.py" />
+        <item itemvalue="Python tests.Unittests in tests.py" />
+        <item itemvalue="Python tests.Unittests in tests.py (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f64d381-0293-4d05-875e-7dd45f8fad37" name="Default Changelist" comment="" />
+      <created>1565084248632</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1565084248632</updated>
+      <workItem from="1567593585201" duration="671000" />
+      <workItem from="1567753998668" duration="2048000" />
+      <workItem from="1568431959726" duration="1019000" />
+      <workItem from="1568942788598" duration="4101000" />
+      <workItem from="1568946900381" duration="69000" />
+      <workItem from="1568946977439" duration="1711000" />
+      <workItem from="1568949795864" duration="133000" />
+      <workItem from="1568949931459" duration="182000" />
+      <workItem from="1568950117043" duration="791000" />
+      <workItem from="1568977169670" duration="67000" />
+      <workItem from="1568977238863" duration="953000" />
+      <workItem from="1569554248847" duration="905000" />
+      <workItem from="1569555357226" duration="1423000" />
+      <workItem from="1569560023191" duration="27000" />
+      <workItem from="1569987822813" duration="265000" />
+    </task>
+    <task id="LOCAL-00001" summary="exception beauty">
+      <created>1565094482955</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1565094482955</updated>
+    </task>
+    <task id="LOCAL-00002" summary="ubittests">
+      <created>1565138016747</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1565138016747</updated>
+    </task>
+    <task id="LOCAL-00003" summary="sql_cursor_trable">
+      <created>1565141120629</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1565141120629</updated>
+    </task>
+    <task id="LOCAL-00004" summary="minor gramma fix">
+      <created>1565346448214</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1565346448214</updated>
+    </task>
+    <task id="LOCAL-00005" summary="filter array in answer">
+      <created>1565352931462</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1565352931462</updated>
+    </task>
+    <task id="LOCAL-00006" summary="unittest for check_func">
+      <created>1565407005471</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1565407005471</updated>
+    </task>
+    <task id="LOCAL-00007" summary="exception_count">
+      <created>1565407416794</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1565407416794</updated>
+    </task>
+    <task id="LOCAL-00008" summary="check utf char">
+      <created>1565599999310</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1565599999310</updated>
+    </task>
+    <task id="LOCAL-00009" summary="minor improvement">
+      <created>1565612664542</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1565612664542</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refactoring">
+      <created>1565613299653</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1565613299653</updated>
+    </task>
+    <task id="LOCAL-00011" summary="refactoring">
+      <created>1565613660622</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1565613660622</updated>
+    </task>
+    <task id="LOCAL-00012" summary="elevator rights&#10;minor exchange">
+      <created>1565867800672</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1565867800672</updated>
+    </task>
+    <task id="LOCAL-00013" summary="unittest&#10;refactoring">
+      <created>1565929564987</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1565929564987</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix bag with null sheets">
+      <created>1565930512830</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1565930512830</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fit \n exeption">
+      <created>1565932968209</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1565932968209</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactor">
+      <created>1565935639981</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1565935639981</updated>
+    </task>
+    <task id="LOCAL-00017" summary="refactor">
+      <created>1566096823571</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1566096823571</updated>
+    </task>
+    <task id="LOCAL-00018" summary="dir functions">
+      <created>1566175020580</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1566175020580</updated>
+    </task>
+    <task id="LOCAL-00019" summary="lower Int error fix">
+      <created>1566181994579</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1566181994579</updated>
+    </task>
+    <task id="LOCAL-00020" summary="lower Int error fix">
+      <created>1566182164914</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1566182164914</updated>
+    </task>
+    <task id="LOCAL-00021" summary="report id bind">
+      <created>1566195869970</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1566195869970</updated>
+    </task>
+    <task id="LOCAL-00022" summary="add .exe executer">
+      <created>1566264934882</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1566264934882</updated>
+    </task>
+    <task id="LOCAL-00023" summary="and log and timer wrap">
+      <created>1566447995065</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1566447995065</updated>
+    </task>
+    <task id="LOCAL-00024" summary="string refactor">
+      <created>1566517747670</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1566517747670</updated>
+    </task>
+    <task id="LOCAL-00025" summary="+1 from max excel rows">
+      <created>1567050739625</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1567050739625</updated>
+    </task>
+    <task id="LOCAL-00026" summary="+1 from max excel rows">
+      <created>1567050797451</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1567050797451</updated>
+    </task>
+    <task id="LOCAL-00027" summary="+1 from max excel rows">
+      <created>1568946419844</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1568946419844</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Revert &quot;refactor&quot;&#10;&#10;This reverts commit 8f5a4cfe">
+      <created>1568949118879</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1568949118879</updated>
+    </task>
+    <task id="LOCAL-00029" summary="strip answers">
+      <created>1568949881625</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1568949881625</updated>
+    </task>
+    <task id="LOCAL-00030" summary="strip answers">
+      <created>1568950255268</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1568950255268</updated>
+    </task>
+    <task id="LOCAL-00031" summary="requerments">
+      <created>1568978033405</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1568978033405</updated>
+    </task>
+    <task id="LOCAL-00032" summary="clean master">
+      <created>1569555932565</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1569555932565</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="SHOW_OTHER_BRANCHES" value="true" />
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="2">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="ubittests" />
+    <MESSAGE value="sql_cursor_trable" />
+    <MESSAGE value="minor gramma fix" />
+    <MESSAGE value="filter array in answer" />
+    <MESSAGE value="unittest for check_func" />
+    <MESSAGE value="exception_count" />
+    <MESSAGE value="check utf char" />
+    <MESSAGE value="minor improvement" />
+    <MESSAGE value="refactoring" />
+    <MESSAGE value="elevator rights&#10;minor exchange" />
+    <MESSAGE value="unittest&#10;refactoring" />
+    <MESSAGE value="fix bag with null sheets" />
+    <MESSAGE value="fit \n exeption" />
+    <MESSAGE value="refactor" />
+    <MESSAGE value="dir functions" />
+    <MESSAGE value="lower Int error fix" />
+    <MESSAGE value="report id bind" />
+    <MESSAGE value="add .exe executer" />
+    <MESSAGE value="and log and timer wrap" />
+    <MESSAGE value="string refactor" />
+    <MESSAGE value="strip answer" />
+    <MESSAGE value="Revert &quot;refactor&quot;&#10;&#10;This reverts commit 8f5a4cfe" />
+    <MESSAGE value="strip answers" />
+    <MESSAGE value="requerments" />
+    <MESSAGE value="clean master" />
+    <option name="LAST_COMMIT_MESSAGE" value="clean master" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/FormGenerator/main.py</url>
+          <line>94</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="excel_row" />
+        <watch expression="excel_row" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/FormGenerator$Unittests_in_tests_py__1_.coverage" NAME="Unittests in tests.py (1) Coverage Results" MODIFIED="1569554330149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FormGenerator$main.coverage" NAME="main Coverage Results" MODIFIED="1568945160225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
